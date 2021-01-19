@@ -17,19 +17,26 @@
 
 <script>
 import RightPanel from '@/components/RightPanel'
+import MainMenu from './components/MainMenu'
 import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
+  data(){
+    return{
+
+    }
+  },
   components: {
     AppMain,
     Navbar,
     RightPanel,
     Settings,
     Sidebar,
-    TagsView
+    TagsView,
+    MainMenu
   },
   mixins: [ResizeMixin],
   computed: {

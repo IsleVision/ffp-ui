@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '乡村振兴脱贫巩固大数据平台',
       logo: logoImg
     }
   }
@@ -57,10 +57,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      height: 21px;
       vertical-align: middle;
-      margin-right: 12px;
     }
 
     & .sidebar-title {

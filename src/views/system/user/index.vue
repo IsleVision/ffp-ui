@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--部门数据-->
+      <!--单位数据-->
       <el-col :span="4" :xs="24">
         <div class="head-container">
           <el-input
             v-model="deptName"
-            placeholder="请输入部门名称"
+            placeholder="请输入单位名称"
             clearable
             size="small"
             prefix-icon="el-icon-search"
@@ -28,10 +28,10 @@
       <!--用户数据-->
       <el-col :span="20" :xs="24">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-          <el-form-item label="用户名称" prop="userName">
+          <el-form-item label="登录账号" prop="userName">
             <el-input
               v-model="queryParams.userName"
-              placeholder="请输入用户名称"
+              placeholder="请输入登录账号"
               clearable
               size="small"
               style="width: 240px"
@@ -143,9 +143,9 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" prop="userId" />
-          <el-table-column label="用户名称" align="center" prop="userName" :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column label="部门" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
+          <el-table-column label="登录账号" align="center" prop="userName" :show-overflow-tooltip="true" />
+          <el-table-column label="用户名" align="center" prop="nickName" :show-overflow-tooltip="true" />
+          <el-table-column label="单位" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
           <el-table-column label="手机号码" align="center" prop="phonenumber" width="120" />
           <el-table-column label="状态" align="center">
             <template slot-scope="scope">
@@ -210,13 +210,13 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户昵称" prop="nickName">
-              <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
+            <el-form-item label="用户名" prop="nickName">
+              <el-input v-model="form.nickName" placeholder="请输入用户名" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="归属部门" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :disable-branch-nodes="true" :show-count="true" placeholder="请选择归属部门" />
+            <el-form-item label="所属单位" prop="deptId">
+              <treeselect v-model="form.deptId" :options="deptOptions" :disable-branch-nodes="true" :show-count="true" placeholder="请选择所属单位" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -234,8 +234,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item v-if="form.userId == undefined" label="用户名称" prop="userName">
-              <el-input v-model="form.userName" placeholder="请输入用户名称" />
+            <el-form-item v-if="form.userId == undefined" label="登录账号" prop="userName">
+              <el-input v-model="form.userName" placeholder="请输入登录账号" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -372,11 +372,11 @@ export default {
       userList: null,
       // 弹出层标题
       title: "",
-      // 部门树选项
+      // 单位树选项
       deptOptions: undefined,
       // 是否显示弹出层
       open: false,
-      // 部门名称
+      // 单位名称
       deptName: undefined,
       // 默认密码
       initPassword: undefined,
@@ -423,13 +423,13 @@ export default {
       // 表单校验
       rules: {
         userName: [
-          { required: true, message: "用户名称不能为空", trigger: "blur" }
+          { required: true, message: "登录账号不能为空", trigger: "blur" }
         ],
         nickName: [
-          { required: true, message: "用户昵称不能为空", trigger: "blur" }
+          { required: true, message: "用户名不能为空", trigger: "blur" }
         ],
         deptId: [
-          { required: true, message: "归属部门不能为空", trigger: "blur" }
+          { required: true, message: "所属单位不能为空", trigger: "blur" }
         ],
         password: [
           { required: true, message: "用户密码不能为空", trigger: "blur" }
@@ -454,7 +454,7 @@ export default {
     };
   },
   watch: {
-    // 根据名称筛选部门树
+    // 根据名称筛选单位树
     deptName(val) {
       this.$refs.tree.filter(val);
     }
@@ -483,7 +483,7 @@ export default {
         }
       );
     },
-    /** 查询部门下拉树结构 */
+    /** 查询单位下拉树结构 */
     getTreeselect() {
       treeselect().then(response => {
         this.deptOptions = response.data;
