@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 import { praseStrEmpty } from "@/utils/ffp";
+// 获取行政区划
+export function getArea(query) {
+  return request({
+    url: 'system/dept/list',
+    method: 'get',
+    params: query
+  })
+}
 
 // 查询用户列表
 export function listUser(query) {

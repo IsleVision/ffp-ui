@@ -150,6 +150,9 @@
         <el-tab-pane label="支出信息" name="outlay">
           <OutlayInfoForm/>
         </el-tab-pane>
+        <el-tab-pane label="监测信息" name="outlay">
+          <OutlayInfoForm/>
+        </el-tab-pane>
       </el-tabs>
      <!-- <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

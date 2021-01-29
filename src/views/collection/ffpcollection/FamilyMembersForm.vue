@@ -22,13 +22,7 @@
       <el-table-column prop="status" label="联系电话" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="联系电话" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否现役军人" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否享受农村居民最低生活保障(国扶办)" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否享受低保(民政)" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否参加大病保险" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否享受临时救助" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否失学或辍学" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否会讲普通话" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="是否参加城乡居民基本医疗保险" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否参加城乡居民基本养老保险" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否参加商业补充医疗保险" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否享受人身意外保险补贴" :formatter="statusFormat" width="100"></el-table-column>
@@ -190,80 +184,11 @@
         <el-col :span="8">
           <el-row gutter="15">
             <el-col :span="8">
-              <el-form-item label="是否享受农村居民最低生活保障(国扶办)" prop="field130">
-                <el-select v-model="formData.field130" placeholder="请选择是否享受农村居民最低生活保障(国扶办)" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field130Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否享受低保(民政)" prop="field131">
-                <el-select v-model="formData.field131" placeholder="请选择是否享受低保(民政)" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field131Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row gutter="15">
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否参加大病保险" prop="field136">
-                <el-select v-model="formData.field136" placeholder="请选择是否参加大病保险" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field136Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否享受临时救助" prop="field137">
-                <el-select v-model="formData.field137" placeholder="请选择是否享受临时救助" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field137Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
               <el-form-item label="政治面貌" prop="field138">
                 <el-select v-model="formData.field138" placeholder="请选择政治面貌" clearable
-                  :style="{width: '200px'}">
+                           :style="{width: '200px'}">
                   <el-option v-for="(item, index) in field138Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row gutter="15">
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否失学或辍学" prop="field144">
-                <el-select v-model="formData.field144" placeholder="请选择是否失学或辍学" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field144Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
+                             :value="item.value" :disabled="item.disabled"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -274,22 +199,9 @@
             <el-col :span="8">
               <el-form-item label="是否会讲普通话" prop="field145">
                 <el-select v-model="formData.field145" placeholder="请选择是否会讲普通话" clearable
-                  :style="{width: '200px'}">
+                           :style="{width: '200px'}">
                   <el-option v-for="(item, index) in field145Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否参加城乡居民基本医疗保险" prop="field143">
-                <el-select v-model="formData.field143" placeholder="请选择是否参加城乡居民基本医疗保险" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field143Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
+                             :value="item.value" :disabled="item.disabled"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -362,14 +274,8 @@ export default {
         field122: undefined,
         field123: undefined,
         field129: undefined,
-        field130: undefined,
-        field131: undefined,
-        field136: undefined,
-        field137: undefined,
         field138: undefined,
-        field144: undefined,
         field145: undefined,
-        field143: undefined,
         field152: undefined,
         field153: undefined,
         field154: undefined,
@@ -425,44 +331,14 @@ export default {
           message: '请选择是否现役军人',
           trigger: 'change'
         }],
-        field130: [{
-          required: true,
-          message: '请选择是否享受农村居民最低生活保障(国扶办)',
-          trigger: 'change'
-        }],
-        field131: [{
-          required: true,
-          message: '请选择是否享受低保(民政)',
-          trigger: 'change'
-        }],
-        field136: [{
-          required: true,
-          message: '请选择是否参加大病保险',
-          trigger: 'change'
-        }],
-        field137: [{
-          required: true,
-          message: '请选择是否享受临时救助',
-          trigger: 'change'
-        }],
         field138: [{
           required: true,
           message: '请选择政治面貌',
           trigger: 'change'
         }],
-        field144: [{
-          required: true,
-          message: '请选择是否失学或辍学',
-          trigger: 'change'
-        }],
         field145: [{
           required: true,
           message: '请选择是否会讲普通话',
-          trigger: 'change'
-        }],
-        field143: [{
-          required: true,
-          message: '请选择是否参加城乡居民基本医疗保险',
           trigger: 'change'
         }],
         field152: [{
@@ -530,34 +406,6 @@ export default {
         "label": "选项二",
         "value": 2
       }],
-      field130Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field131Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field136Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field137Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
       field138Options: [{
         "label": "选项一",
         "value": 1
@@ -565,21 +413,7 @@ export default {
         "label": "选项二",
         "value": 2
       }],
-      field144Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
       field145Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field143Options: [{
         "label": "选项一",
         "value": 1
       }, {

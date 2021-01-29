@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <!--单位数据-->
-      <el-col :span="4" :xs="24">
+      <!--<el-col :span="4" :xs="24">
         <div class="head-container">
           <el-input
             v-model="deptName"
@@ -24,9 +24,9 @@
             @node-click="handleNodeClick"
           />
         </div>
-      </el-col>
+      </el-col>-->
       <!--用户数据-->
-      <el-col :span="20" :xs="24">
+      <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="登录账号" prop="userName">
             <el-input
@@ -58,9 +58,9 @@
             >
               <el-option
                 v-for="dict in statusOptions"
-                :key="dict.dictValue"
-                :label="dict.dictLabel"
-                :value="dict.dictValue"
+                :key="dict.deptId"
+                :label="dict.deptName"
+                :value="dict.deptId"
               />
             </el-select>
           </el-form-item>
@@ -214,9 +214,73 @@
               <el-input v-model="form.nickName" placeholder="请输入用户名" />
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
-            <el-form-item label="所属单位" prop="deptId">
-              <treeselect v-model="form.deptId" :options="deptOptions" :disable-branch-nodes="true" :show-count="true" placeholder="请选择所属单位" />
+            <el-form-item label="省" prop="province">
+              <el-select v-model="form.province" placeholder="请选择" @change="getAreaList('province')">
+                <el-option
+                  v-for="dict in province"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="市" prop="city">
+              <el-select v-model="form.city" placeholder="请选择" @change="getAreaList('city')">
+                <el-option
+                  v-for="dict in city"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="县" prop="county">
+              <el-select v-model="form.county" placeholder="请选择" @change="getAreaList('county')">
+                <el-option
+                  v-for="dict in county"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="乡" prop="town">
+              <el-select v-model="form.town" placeholder="请选择" @change="getAreaList('town')">
+                <el-option
+                  v-for="dict in town"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="村" prop="village">
+              <el-select v-model="form.village" placeholder="请选择">
+                <el-option
+                  v-for="dict in village"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -250,9 +314,9 @@
               <el-select v-model="form.sex" placeholder="请选择">
                 <el-option
                   v-for="dict in sexOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictLabel"
-                  :value="dict.dictValue"
+                  :key="dict.deptId"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -262,9 +326,9 @@
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in statusOptions"
-                  :key="dict.dictValue"
-                  :label="dict.dictValue"
-                >{{dict.dictLabel}}</el-radio>
+                  :key="dict.deptId"
+                  :label="dict.deptId"
+                >{{dict.deptName}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -345,9 +409,8 @@
 </template>
 
 <script>
-import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus } from "@/api/system/user";
+import { listUser, getUser, delUser, addUser, updateUser, resetUserPwd, changeUserStatus,getArea } from "@/api/system/user";
 import { getToken } from "@/utils/auth";
-import { treeselect } from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -356,6 +419,21 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      //当前选择的行政区划
+      Area:{
+        code:'100',
+        lev:1
+      },
+      //省
+      province:[],
+      //市
+      city:[],
+      //县
+      county:[],
+      //乡
+      town:[],
+      //村
+      village:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -372,8 +450,8 @@ export default {
       userList: null,
       // 弹出层标题
       title: "",
-      // 单位树选项
-      deptOptions: undefined,
+   /*   // 单位树选项
+      deptOptions: undefined,*/
       // 是否显示弹出层
       open: false,
       // 单位名称
@@ -461,7 +539,8 @@ export default {
   },
   created() {
     this.getList();
-    this.getTreeselect();
+    /*this.getTreeselect();*/
+    this.getAreaList('country');
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
@@ -473,6 +552,56 @@ export default {
     });
   },
   methods: {
+    /** 获取行政区划 */
+    getAreaList(area) {
+      this.loading = true;
+      //判断选了第几级
+      if(this.form.village){
+        this.Area.code = this.form.village
+      }else if(this.form.town){
+        this.Area.code = this.form.town
+      }else if(this.form.county){
+        this.Area.code = this.form.county
+      }else if(this.form.city){
+        this.Area.code = this.form.city
+      }else if(this.form.province){
+        this.Area.code = this.form.province
+      }
+      getArea({parentId:this.Area.code}).then(response => {
+        const that = this;
+          if(response.data.length >0){
+            if(area == 'country'){
+              that.province = response.data.filter(item =>{
+                return item.lev === 1
+              })
+            }
+            if(area == 'province'){
+                that.city = response.data.filter(item =>{
+                  return item.lev === 2
+                })
+            }
+
+            if(area == 'city'){
+                that.county = response.data.filter(item =>{
+                  return item.lev === 3
+                })
+            }
+
+            if(area == 'county'){
+                that.town = response.data.filter(item =>{
+                  return item.lev === 4
+                })
+            }
+
+            if(area == 'town'){
+                that.village = response.data.filter(item =>{
+                  return item.lev === 5
+                })
+            }
+          }
+        }
+      );
+    },
     /** 查询用户列表 */
     getList() {
       this.loading = true;
@@ -483,12 +612,12 @@ export default {
         }
       );
     },
-    /** 查询单位下拉树结构 */
+/*    /!** 查询单位下拉树结构 *!/
     getTreeselect() {
       treeselect().then(response => {
         this.deptOptions = response.data;
       });
-    },
+    },*/
     // 筛选节点
     filterNode(value, data) {
       if (!value) return true;
@@ -557,7 +686,7 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.getTreeselect();
+      /*this.getTreeselect();*/
       getUser().then(response => {
         this.postOptions = response.posts;
         this.roleOptions = response.roles;
@@ -569,7 +698,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      this.getTreeselect();
+     /* this.getTreeselect();*/
       const userId = row.userId || this.ids;
       getUser(userId).then(response => {
         this.form = response.data;

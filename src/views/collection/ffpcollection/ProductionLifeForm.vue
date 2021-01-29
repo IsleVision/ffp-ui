@@ -121,32 +121,6 @@
             </el-col>
           </el-row>
         </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="是否解决安全饮用水" prop="field131">
-                <el-select v-model="formData.field131" placeholder="请选择是否解决安全饮用水" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field131Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row gutter="15">
-            <el-col :span="8">
-              <el-form-item label="危房户" prop="field133">
-                <el-select v-model="formData.field133" placeholder="请选择危房户" clearable
-                  :style="{width: '200px'}">
-                  <el-option v-for="(item, index) in field133Options" :key="index" :label="item.label"
-                    :value="item.value" :disabled="item.disabled"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-col>
       </el-row>
       <el-row gutter="15">
         <el-col :span="8">
@@ -197,8 +171,6 @@ export default {
         field124: undefined,
         field125: undefined,
         field130: undefined,
-        field131: undefined,
-        field133: undefined,
         field138: undefined,
         field139: undefined,
       },
@@ -214,11 +186,6 @@ export default {
         field125: [],
         field130: [],
         field131: [],
-        field133: [{
-          required: true,
-          message: '请选择危房户',
-          trigger: 'change'
-        }],
         field138: [],
         field139: [],
       },
@@ -244,20 +211,6 @@ export default {
         "value": 2
       }],
       field130Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field131Options: [{
-        "label": "选项一",
-        "value": 1
-      }, {
-        "label": "选项二",
-        "value": 2
-      }],
-      field133Options: [{
         "label": "选项一",
         "value": 1
       }, {
