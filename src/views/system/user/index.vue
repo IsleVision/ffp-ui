@@ -28,6 +28,61 @@
       <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+          <el-form-item label="省" prop="province">
+            <el-select v-model="queryParams.province" placeholder="请选择" @change="getAreaList('province')">
+              <el-option
+                v-for="dict in province"
+                :key="dict.deptId"
+                :lev="dict.lev"
+                :label="dict.deptName"
+                :value="dict.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="市" prop="city">
+            <el-select v-model="queryParams.city" placeholder="请选择" @change="getAreaList('city')">
+              <el-option
+                v-for="dict in city"
+                :key="dict.deptId"
+                :lev="dict.lev"
+                :label="dict.deptName"
+                :value="dict.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="县" prop="county">
+            <el-select v-model="queryParams.county" placeholder="请选择" @change="getAreaList('county')">
+              <el-option
+                v-for="dict in county"
+                :key="dict.deptId"
+                :lev="dict.lev"
+                :label="dict.deptName"
+                :value="dict.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="乡" prop="town">
+            <el-select v-model="queryParams.town" placeholder="请选择" @change="getAreaList('town')">
+              <el-option
+                v-for="dict in town"
+                :key="dict.deptId"
+                :lev="dict.lev"
+                :label="dict.deptName"
+                :value="dict.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="村" prop="village">
+            <el-select v-model="queryParams.village" placeholder="请选择">
+              <el-option
+                v-for="dict in village"
+                :key="dict.deptId"
+                :lev="dict.lev"
+                :label="dict.deptName"
+                :value="dict.deptId"
+              ></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="登录账号" prop="userName">
             <el-input
               v-model="queryParams.userName"
@@ -145,7 +200,7 @@
           <el-table-column label="用户编号" align="center" prop="userId" />
           <el-table-column label="登录账号" align="center" prop="userName" :show-overflow-tooltip="true" />
           <el-table-column label="用户名" align="center" prop="nickName" :show-overflow-tooltip="true" />
-          <el-table-column label="单位" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />
+        <!--  <el-table-column label="单位" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />-->
           <el-table-column label="手机号码" align="center" prop="phonenumber" width="120" />
           <el-table-column label="状态" align="center">
             <template slot-scope="scope">
@@ -310,13 +365,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="用户性别">
-              <el-select v-model="form.sex" placeholder="请选择">
+            <el-form-item label="角色">
+              <el-select v-model="form.roleIds" multiple placeholder="请选择">
                 <el-option
-                  v-for="dict in sexOptions"
-                  :key="dict.deptId"
-                  :label="dict.deptName"
-                  :value="dict.deptId"
+                  v-for="item in roleOptions"
+                  :key="item.roleId"
+                  :label="item.roleName"
+                  :value="item.roleId"
+                  :disabled="item.status == 1"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -330,34 +386,6 @@
                   :label="dict.deptId"
                 >{{dict.deptName}}</el-radio>
               </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="岗位">
-              <el-select v-model="form.postIds" multiple placeholder="请选择">
-                <el-option
-                  v-for="item in postOptions"
-                  :key="item.postId"
-                  :label="item.postName"
-                  :value="item.postId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择">
-                <el-option
-                  v-for="item in roleOptions"
-                  :key="item.roleId"
-                  :label="item.roleName"
-                  :value="item.roleId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -462,10 +490,6 @@ export default {
       dateRange: [],
       // 状态数据字典
       statusOptions: [],
-      // 性别状态字典
-      sexOptions: [],
-      // 岗位选项
-      postOptions: [],
       // 角色选项
       roleOptions: [],
       // 表单参数
@@ -496,7 +520,12 @@ export default {
         userName: undefined,
         phonenumber: undefined,
         status: undefined,
-        deptId: undefined
+        deptId: undefined,
+        province: undefined,
+        city: undefined,
+        county: undefined,
+        town:undefined,
+        village:undefined
       },
       // 表单校验
       rules: {
@@ -544,9 +573,6 @@ export default {
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
-    this.getDicts("sys_user_sex").then(response => {
-      this.sexOptions = response.data;
-    });
     this.getConfigKey("sys.user.initPassword").then(response => {
       this.initPassword = response.msg;
     });
@@ -555,7 +581,7 @@ export default {
     /** 获取行政区划 */
     getAreaList(area) {
       this.loading = true;
-      //判断选了第几级
+      //新增修改判断选了第几级
       if(this.form.village){
         this.Area.code = this.form.village
       }else if(this.form.town){
@@ -566,6 +592,18 @@ export default {
         this.Area.code = this.form.city
       }else if(this.form.province){
         this.Area.code = this.form.province
+      }
+      //查询断选了第几级
+      if(this.queryParams.village){
+        this.Area.code = this.queryParams.village
+      }else if(this.queryParams.town){
+        this.Area.code = this.queryParams.town
+      }else if(this.queryParams.county){
+        this.Area.code = this.queryParams.county
+      }else if(this.queryParams.city){
+        this.Area.code = this.queryParams.city
+      }else if(this.queryParams.province){
+        this.Area.code = this.queryParams.province
       }
       getArea({parentId:this.Area.code}).then(response => {
         const that = this;
@@ -605,6 +643,14 @@ export default {
     /** 查询用户列表 */
     getList() {
       this.loading = true;
+      this.queryParams ={
+        pageNum: this.queryParams.pageNum,
+        pageSize: this.queryParams.pageSize,
+        userName: this.queryParams.userName,
+        phonenumber: this.queryParams.phonenumber,
+        status: this.queryParams.status,
+        deptId: this.Area.code//行政区划
+      };
       listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
           this.userList = response.rows;
           this.total = response.total;
@@ -658,10 +704,8 @@ export default {
         password: undefined,
         phonenumber: undefined,
         email: undefined,
-        sex: undefined,
         status: "0",
         remark: undefined,
-        postIds: [],
         roleIds: []
       };
       this.resetForm("form");
@@ -688,7 +732,6 @@ export default {
       this.reset();
       /*this.getTreeselect();*/
       getUser().then(response => {
-        this.postOptions = response.posts;
         this.roleOptions = response.roles;
         this.open = true;
         this.title = "添加用户";
@@ -702,9 +745,7 @@ export default {
       const userId = row.userId || this.ids;
       getUser(userId).then(response => {
         this.form = response.data;
-        this.postOptions = response.posts;
         this.roleOptions = response.roles;
-        this.form.postIds = response.postIds;
         this.form.roleIds = response.roleIds;
         this.open = true;
         this.title = "修改用户";
