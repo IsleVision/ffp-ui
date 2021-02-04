@@ -148,9 +148,9 @@
           <IncomeForm/>
         </el-tab-pane>
         <el-tab-pane label="支出信息" name="outlay">
-          <OutpayForm/>
+          <OutlayForm/>
         </el-tab-pane>
-        <el-tab-pane label="监测信息" name="outlay">
+        <el-tab-pane label="监测信息" name="monitor">
           <MonitorInfo/>
         </el-tab-pane>
       </el-tabs>
@@ -169,7 +169,7 @@ import FamilyMembersForm from './FamilyMembersForm';
 import ProductionLifeForm from './ProductionLifeForm';
 // import IncomeInfoForm from './IncomeInfoForm';
 import IncomeForm from './IncomeForm';
-import OutpayForm from './OutpayForm';
+import OutlayForm from './OutlayForm';
 import MonitorInfo from  './MonitorInfo'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -183,7 +183,7 @@ export default {
     ProductionLifeForm,
     // IncomeInfoForm,
     IncomeForm,
-    OutpayForm,
+    OutlayForm,
     MonitorInfo
   },
   data() {
