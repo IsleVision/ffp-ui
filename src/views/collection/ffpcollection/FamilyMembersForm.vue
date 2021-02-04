@@ -16,7 +16,6 @@
       <el-table-column prop="status" label="民族" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="文化程度" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="政治面貌" :formatter="statusFormat" width="100"></el-table-column>
-      <el-table-column prop="status" label="在校状态" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="健康状态" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="劳动技能" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="联系电话" :formatter="statusFormat" width="100"></el-table-column>
@@ -26,6 +25,8 @@
       <el-table-column prop="status" label="是否参加城乡居民基本养老保险" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否参加商业补充医疗保险" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column prop="status" label="是否享受人身意外保险补贴" :formatter="statusFormat" width="100"></el-table-column>
+      <el-table-column prop="status" label="减少原因" :formatter="statusFormat" width="100"></el-table-column>
+      <el-table-column prop="status" label="成员状态" :formatter="statusFormat" width="100"></el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -118,8 +119,8 @@
         <el-col :span="8">
           <el-row gutter="15">
             <el-col :span="8">
-              <el-form-item label="在校状态" prop="field115">
-                <el-select v-model="formData.field115" placeholder="请选择在校状态" clearable
+              <el-form-item label="成员状态" prop="field115">
+                <el-select v-model="formData.field115" placeholder="请选择成员状态" clearable
                   :style="{width: '200px'}">
                   <el-option v-for="(item, index) in field115Options" :key="index" :label="item.label"
                     :value="item.value" :disabled="item.disabled"></el-option>
@@ -249,6 +250,18 @@
           </el-row>
         </el-col>
       </el-row>
+      <el-row gutter="15">
+        <el-col :span="8">
+          <el-row gutter="15">
+              <el-col :span="8">
+                <el-form-item label="减少原因" prop="field109">
+                  <el-input v-model="formData.field105" placeholder="请输入减少原因" clearable :style="{width: '200px'}">
+                  </el-input>
+                </el-form-item>
+              </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
       <el-form-item size="large">
         <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
@@ -306,15 +319,15 @@ export default {
           message: '请选择文化程度',
           trigger: 'change'
         }],
-        field115: [{
-          required: true,
-          message: '请选择在校状态',
-          trigger: 'change'
-        }],
         field121: [{
           required: true,
           message: '请选择健康状态',
           trigger: 'change'
+        }],
+        field109:[{
+          required: false,
+          message: '请输入减少原因',
+          trigger: 'blur'
         }],
         field122: [{
           required: true,

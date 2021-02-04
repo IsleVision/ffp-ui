@@ -1,48 +1,29 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--单位数据-->
-      <!--<el-col :span="4" :xs="24">
-        <div class="head-container">
-          <el-input
-            v-model="deptName"
-            placeholder="请输入单位名称"
-            clearable
-            size="small"
-            prefix-icon="el-icon-search"
-            style="margin-bottom: 20px"
-          />
-        </div>
-        <div class="head-container">
-          <el-tree
-            :data="deptOptions"
-            :props="defaultProps"
-            :expand-on-click-node="false"
-            :filter-node-method="filterNode"
-            ref="tree"
-            default-expand-all
-            @node-click="handleNodeClick"
-          />
-        </div>
-      </el-col>-->
-      <!--用户数据-->
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="省" prop="province">
-            <el-select v-model="queryParams.province" placeholder="请选择" @change="getAreaList('province')">
-              <el-option
-                v-for="dict in province"
-                :key="dict.deptId"
-                :lev="dict.lev"
-                :label="dict.deptName"
-                :value="dict.deptId"
-              ></el-option>
-            </el-select>
+            <el-input
+              value="陕西省"
+              placeholder="陕西省"
+              clearable
+              size="small"
+              style="width: 240px"
+            />
           </el-form-item>
           <el-form-item label="市" prop="city">
-            <el-select v-model="queryParams.city" placeholder="请选择" @change="getAreaList('city')">
+            <el-input
+              v-if="userInfo.regionCode02"
+              :value="userInfo.region02"
+              :placeholder="userInfo.region02"
+              clearable
+              size="small"
+              style="width: 240px"
+            />
+            <el-select v-else v-model="queryParams.city" placeholder="请选择" @change="getAreaList('city','search')">
               <el-option
-                v-for="dict in city"
+                v-for="dict in QueryAreaList.city"
                 :key="dict.deptId"
                 :lev="dict.lev"
                 :label="dict.deptName"
@@ -51,9 +32,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="县" prop="county">
-            <el-select v-model="queryParams.county" placeholder="请选择" @change="getAreaList('county')">
+            <el-input
+              v-if="userInfo.regionCode03"
+              :value="userInfo.region03"
+              :placeholder="userInfo.region03"
+              clearable
+              size="small"
+              style="width: 240px"
+            />
+            <el-select v-else v-model="queryParams.county" placeholder="请选择" @change="getAreaList('county','search')">
               <el-option
-                v-for="dict in county"
+                v-for="dict in QueryAreaList.county"
                 :key="dict.deptId"
                 :lev="dict.lev"
                 :label="dict.deptName"
@@ -62,9 +51,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="乡" prop="town">
-            <el-select v-model="queryParams.town" placeholder="请选择" @change="getAreaList('town')">
+            <el-input
+              v-if="userInfo.regionCode04"
+              :value="userInfo.region04"
+              :placeholder="userInfo.region04"
+              clearable
+              size="small"
+              style="width: 240px"
+            />
+            <el-select v-else v-model="queryParams.town" placeholder="请选择" @change="getAreaList('town','search')">
               <el-option
-                v-for="dict in town"
+                v-for="dict in QueryAreaList.town"
                 :key="dict.deptId"
                 :lev="dict.lev"
                 :label="dict.deptName"
@@ -73,9 +70,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="村" prop="village">
-            <el-select v-model="queryParams.village" placeholder="请选择">
+            <el-input
+              v-if="userInfo.regionCode05"
+              :value="userInfo.region05"
+              :placeholder="userInfo.region05"
+              clearable
+              size="small"
+              style="width: 240px"
+            />
+            <el-select v-else v-model="queryParams.village" placeholder="请选择" @change="getAreaList('village','search')">
               <el-option
-                v-for="dict in village"
+                v-for="dict in QueryAreaList.village"
                 :key="dict.deptId"
                 :lev="dict.lev"
                 :label="dict.deptName"
@@ -113,9 +118,9 @@
             >
               <el-option
                 v-for="dict in statusOptions"
-                :key="dict.deptId"
-                :label="dict.deptName"
-                :value="dict.deptId"
+                :key="dict.dictCode"
+                :label="dict.dictLabel"
+                :value="dict.dictCode"
               />
             </el-select>
           </el-form-item>
@@ -197,7 +202,7 @@
 
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
-          <el-table-column label="用户编号" align="center" prop="userId" />
+         <!-- <el-table-column label="用户编号" align="center" prop="userId" />-->
           <el-table-column label="登录账号" align="center" prop="userName" :show-overflow-tooltip="true" />
           <el-table-column label="用户名" align="center" prop="nickName" :show-overflow-tooltip="true" />
         <!--  <el-table-column label="单位" align="center" prop="dept.deptName" :show-overflow-tooltip="true" />-->
@@ -259,8 +264,8 @@
         />
       </el-col>
     </el-row>
-
     <!-- 添加或修改参数配置对话框 -->
+    <!--打开回调open函数 -->
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
@@ -269,26 +274,45 @@
               <el-input v-model="form.nickName" placeholder="请输入用户名" />
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="角色">
+              <el-select v-model="form.roleIds" multiple placeholder="请选择">
+                <el-option
+                  v-for="item in roleOptions"
+                  :key="item.roleId"
+                  :label="item.roleName"
+                  :value="item.roleId"
+                  :disabled="item.status == 1"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="省" prop="province">
-              <el-select v-model="form.province" placeholder="请选择" @change="getAreaList('province')">
-                <el-option
-                  v-for="dict in province"
-                  :key="dict.deptId"
-                  :lev="dict.lev"
-                  :label="dict.deptName"
-                  :value="dict.deptId"
-                ></el-option>
-              </el-select>
+              <el-input
+                value="陕西省"
+                placeholder="陕西省"
+                clearable
+                size="small"
+                style="width: 200px"
+              />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="市" prop="city">
-              <el-select v-model="form.city" placeholder="请选择" @change="getAreaList('city')">
+              <el-input
+                v-if="userInfo.regionCode02"
+                :value="userInfo.region02"
+                :placeholder="userInfo.region02"
+                clearable
+                size="small"
+                style="width: 200px"
+              />
+              <el-select v-else v-model="form.city" placeholder="请选择" @change="getAreaList('city','add')">
                 <el-option
-                  v-for="dict in city"
+                  v-for="dict in QueryAreaList.city"
                   :key="dict.deptId"
                   :lev="dict.lev"
                   :label="dict.deptName"
@@ -297,11 +321,42 @@
               </el-select>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="县" prop="county">
-              <el-select v-model="form.county" placeholder="请选择" @change="getAreaList('county')">
+              <el-input
+                v-if="userInfo.regionCode03"
+                :value="userInfo.region03"
+                :placeholder="userInfo.region03"
+                clearable
+                size="small"
+                style="width: 200px"
+              />
+              <el-select v-else v-model="form.county" placeholder="请选择" @change="getAreaList('county','add')">
                 <el-option
-                  v-for="dict in county"
+                  v-for="dict in QueryAreaList.county"
+                  :key="dict.deptId"
+                  :lev="dict.lev"
+                  :label="dict.deptName"
+                  :value="dict.deptId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="乡" prop="town">
+              <el-input
+                v-if="userInfo.regionCode04"
+                :value="userInfo.region04"
+                :placeholder="userInfo.region04"
+                clearable
+                size="small"
+                style="width: 200px"
+              />
+              <el-select v-else v-model="form.town" placeholder="请选择" @change="getAreaList('town','add')">
+                <el-option
+                  v-for="dict in QueryAreaList.town"
                   :key="dict.deptId"
                   :lev="dict.lev"
                   :label="dict.deptName"
@@ -312,24 +367,19 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="12">
-            <el-form-item label="乡" prop="town">
-              <el-select v-model="form.town" placeholder="请选择" @change="getAreaList('town')">
-                <el-option
-                  v-for="dict in town"
-                  :key="dict.deptId"
-                  :lev="dict.lev"
-                  :label="dict.deptName"
-                  :value="dict.deptId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
           <el-col :span="12">
             <el-form-item label="村" prop="village">
-              <el-select v-model="form.village" placeholder="请选择">
+              <el-input
+                v-if="userInfo.regionCode05"
+                :value="userInfo.region05"
+                :placeholder="userInfo.region05"
+                clearable
+                size="small"
+                style="width: 200px"
+              />
+              <el-select v-else v-model="form.village" placeholder="请选择" @change="getAreaList('village','add')">
                 <el-option
-                  v-for="dict in village"
+                  v-for="dict in QueryAreaList.village"
                   :key="dict.deptId"
                   :lev="dict.lev"
                   :label="dict.deptName"
@@ -338,16 +388,9 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="手机号码" prop="phonenumber">
               <el-input v-model="form.phonenumber" placeholder="请输入手机号码" maxlength="11" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="邮箱" prop="email">
-              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -365,16 +408,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="角色">
-              <el-select v-model="form.roleIds" multiple placeholder="请选择">
-                <el-option
-                  v-for="item in roleOptions"
-                  :key="item.roleId"
-                  :label="item.roleName"
-                  :value="item.roleId"
-                  :disabled="item.status == 1"
-                ></el-option>
-              </el-select>
+            <el-form-item label="邮箱" prop="email">
+              <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -382,9 +417,9 @@
               <el-radio-group v-model="form.status">
                 <el-radio
                   v-for="dict in statusOptions"
-                  :key="dict.deptId"
-                  :label="dict.deptId"
-                >{{dict.deptName}}</el-radio>
+                  :key="dict.dictCode"
+                  :label="dict.dictValue"
+                >{{dict.dictLabel}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -402,7 +437,6 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
     <!-- 用户导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open" width="400px" append-to-body>
       <el-upload
@@ -447,21 +481,28 @@ export default {
   components: { Treeselect },
   data() {
     return {
+      //当前登录人信息
+      userInfo:{},
       //当前选择的行政区划
       Area:{
-        code:'100',
+        code:'',
         lev:1
       },
-      //省
-      province:[],
-      //市
-      city:[],
-      //县
-      county:[],
-      //乡
-      town:[],
-      //村
-      village:[],
+      //当前登录人deptId
+      currentDeptId:'',
+      //查询的行政区划树
+      QueryAreaList:{
+        //省
+        province:[],
+        //市
+        city:[],
+        //县
+        county:[],
+        //乡
+        town:[],
+        //村
+        village:[]
+      },
       // 遮罩层
       loading: true,
       // 选中数组
@@ -482,8 +523,6 @@ export default {
       deptOptions: undefined,*/
       // 是否显示弹出层
       open: false,
-      // 单位名称
-      deptName: undefined,
       // 默认密码
       initPassword: undefined,
       // 日期范围
@@ -561,39 +600,205 @@ export default {
     };
   },
   watch: {
-    // 根据名称筛选单位树
-    deptName(val) {
-      this.$refs.tree.filter(val);
-    }
+
   },
   created() {
+    //获取当前用户信息
+    this.userInfo=this.$store.getters.dept;
+    this.currentDeptId = this.$store.getters.dept.deptId;
+    this.Area.code = this.currentDeptId;
+    this.Area.lev = this.$store.getters.dept.lev;
+    //请求用户列表
     this.getList();
-    /*this.getTreeselect();*/
-    this.getAreaList('country');
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
     this.getConfigKey("sys.user.initPassword").then(response => {
       this.initPassword = response.msg;
     });
+    //根据当前账号等级请求行政区划
+    if(this.Area.lev == 1){
+      this.getAreaList('city','add',this.currentDeptId);
+    }else if(this.Area.lev == 2){
+      this.getAreaList('county','add',this.currentDeptId);
+    }else if(this.Area.lev == 3){
+      this.getAreaList('town','add',this.currentDeptId);
+    }else if(this.Area.lev == 4){
+      this.getAreaList('village','add',this.currentDeptId);
+    }else{
+      this.getAreaList('city','add',this.currentDeptId);
+    }
   },
   methods: {
     /** 获取行政区划 */
-    getAreaList(area) {
+    /** area级别
+     *  type业务类型
+     * */
+    getAreaList(area,type,code) {
+        if(code){
+            if(area == 'city' && type =='add'){
+              //请求市list
+              getArea({parentId:code}).then(response => {
+                  const that = this;
+                  if(response.data.length >0){
+                      that.QueryAreaList.city = response.data.filter(item =>{
+                        return item.lev === 2
+                      })
+                    }
+                })
+            }else if(area == 'county' && type =='add'){
+              //请求县区list
+              getArea({parentId:code}).then(response => {
+                const that = this;
+                if(response.data.length >0){
+                  that.QueryAreaList.county = response.data.filter(item =>{
+                    return item.lev === 3
+                  })
+                }
+              })
+            }else if(area == 'town' && type =='add'){
+              //请求乡镇list
+              getArea({parentId:code}).then(response => {
+                const that = this;
+                if(response.data.length >0){
+                  that.QueryAreaList.town = response.data.filter(item =>{
+                    return item.lev === 4
+                  })
+                }
+              })
+            }else if(area == 'village' && type =='add'){
+              //请求村list
+              getArea({parentId:code}).then(response => {
+                const that = this;
+                if(response.data.length >0){
+                  that.QueryAreaList.village = response.data.filter(item =>{
+                    return item.lev === 5
+                  })
+                }
+              })
+            }
+        }else{
+          //选中option刷新改变视图
+          this.$forceUpdate();
+          if(area != 'village'){
+            if(type == 'add'){
+              //判断当前选中的是哪一级，将参数赋值给请求参数
+              if(area == 'city'){
+                this.Area.code = this.form.city
+              }
+              else if(area == 'county'){
+                this.Area.code = this.form.county
+              }
+              else if(area == 'town'){
+                this.Area.code = this.form.town
+              }
+            }else if(type == 'search'){
+              //判断当前选中的是哪一级，将参数赋值给请求参数
+              if(area == 'city'){
+                this.Area.code = this.queryParams.city
+              }
+              else if(area == 'county'){
+                this.Area.code = this.queryParams.county
+              }
+              else if(area == 'town'){
+                this.Area.code = this.queryParams.town
+              }
+            }
+            getArea({parentId:this.Area.code}).then(response => {
+                const that = this;
+                if(response.data.length >0){
+                  //请求省级、市级行政区划树数组
+                  if(area == 'province'){
+                    //清空行政区划树数组
+                    that.QueryAreaList.city = []
+                    that.QueryAreaList.county =[]
+                    that.QueryAreaList.town = []
+                    that.QueryAreaList.village =[]
+                    //清空查询参数
+                    that.queryParams.city = ''
+                    that.queryParams.county = ''
+                    that.queryParams.town = ''
+                    that.queryParams.village = ''
+                    //清空新增修改参数
+                    that.form.city = ''
+                    that.form.county = ''
+                    that.form.town = ''
+                    that.form.village = ''
+                    //进入页面默认请求出“省”，“市”行政区划List即lev等于1等于2的item
+                    that.queryParams.province = response.data[0].deptId
+                    that.QueryAreaList.province = response.data.filter(item =>{
+                      return item.lev === 1
+                    });
+                    that.QueryAreaList.city = response.data.filter(item =>{
+                      return item.lev === 2
+                    })
+                  }
+                  //请求区县级行政区划树数组
+                  if(area == 'city'){
+                    //清空行政区划树数组
+                    that.QueryAreaList.county =[]
+                    that.QueryAreaList.town = []
+                    that.QueryAreaList.village =[]
+                    //清空查询参数
+                    that.queryParams.county = ''
+                    that.queryParams.town = ''
+                    that.queryParams.village = ''
+                    //清空新增修改参数
+                    that.form.county = ''
+                    that.form.town = ''
+                    that.form.village = ''
+                    //检出lev等于3的item
+                    that.QueryAreaList.county = response.data.filter(item =>{
+                      return item.lev === 3
+                    })
+                  }
+                  //请求乡镇级别行政区划树数组
+                  if(area == 'county'){
+                    //清空行政区划树数组
+                    that.QueryAreaList.town = []
+                    that.QueryAreaList.village =[]
+                    //清空查询参数
+                    that.queryParams.town = ''
+                    that.queryParams.village = ''
+                    //清空新增修改参数
+                    that.form.town = ''
+                    that.form.village = ''
+                    //检出lev等级等于4的item
+                    that.QueryAreaList.town = response.data.filter(item =>{
+                      return item.lev === 4
+                    })
+                  }
+                  //请求村级行政区划树数组
+                  if(area == 'town'){
+                    //清空行政区划树数组
+                    that.QueryAreaList.village =[]
+                    //清空查询参数
+                    that.queryParams.village = ''
+                    //清空新增修改参数
+                    that.form.village = ''
+                    //检出lev等级等于5的item
+                    that.QueryAreaList.village = response.data.filter(item =>{
+                      return item.lev === 5
+                    })
+                  }
+                }
+              }
+            );
+          }else{
+            //村选择option
+            if(this.form.village){
+              this.Area.code = this.form.village
+            }else{
+              this.Area.code = this.queryParams.village
+            }
+          }
+        }
+
+    },
+    /** 查询用户列表 */
+    getList() {
       this.loading = true;
-      //新增修改判断选了第几级
-      if(this.form.village){
-        this.Area.code = this.form.village
-      }else if(this.form.town){
-        this.Area.code = this.form.town
-      }else if(this.form.county){
-        this.Area.code = this.form.county
-      }else if(this.form.city){
-        this.Area.code = this.form.city
-      }else if(this.form.province){
-        this.Area.code = this.form.province
-      }
-      //查询断选了第几级
+      //处理行政区划参数,始终传最后一级
       if(this.queryParams.village){
         this.Area.code = this.queryParams.village
       }else if(this.queryParams.town){
@@ -604,45 +809,9 @@ export default {
         this.Area.code = this.queryParams.city
       }else if(this.queryParams.province){
         this.Area.code = this.queryParams.province
+      }else{
+        this.Area.code = this.currentDeptId
       }
-      getArea({parentId:this.Area.code}).then(response => {
-        const that = this;
-          if(response.data.length >0){
-            if(area == 'country'){
-              that.province = response.data.filter(item =>{
-                return item.lev === 1
-              })
-            }
-            if(area == 'province'){
-                that.city = response.data.filter(item =>{
-                  return item.lev === 2
-                })
-            }
-
-            if(area == 'city'){
-                that.county = response.data.filter(item =>{
-                  return item.lev === 3
-                })
-            }
-
-            if(area == 'county'){
-                that.town = response.data.filter(item =>{
-                  return item.lev === 4
-                })
-            }
-
-            if(area == 'town'){
-                that.village = response.data.filter(item =>{
-                  return item.lev === 5
-                })
-            }
-          }
-        }
-      );
-    },
-    /** 查询用户列表 */
-    getList() {
-      this.loading = true;
       this.queryParams ={
         pageNum: this.queryParams.pageNum,
         pageSize: this.queryParams.pageSize,
@@ -657,22 +826,6 @@ export default {
           this.loading = false;
         }
       );
-    },
-/*    /!** 查询单位下拉树结构 *!/
-    getTreeselect() {
-      treeselect().then(response => {
-        this.deptOptions = response.data;
-      });
-    },*/
-    // 筛选节点
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    },
-    // 节点单击事件
-    handleNodeClick(data) {
-      this.queryParams.deptId = data.id;
-      this.getList();
     },
     // 用户状态修改
     handleStatusChange(row) {
@@ -730,26 +883,80 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      /*this.getTreeselect();*/
+      const that = this;
       getUser().then(response => {
-        this.roleOptions = response.roles;
-        this.open = true;
-        this.title = "添加用户";
-        this.form.password = this.initPassword;
+        that.roleOptions = response.roles;
+        that.open = true;
+        that.title = "添加用户";
+        that.form.password = that.initPassword;
+
+        //清空市、县、乡镇、村list
+        that.QueryAreaList.city =[];
+        that.QueryAreaList.county =[];
+        that.QueryAreaList.town=[];
+        that.QueryAreaList.village= [];
+        //根据当前账号等级请求行政区划
+        if(this.Area.lev == 1){
+          this.getAreaList('city','add',this.currentDeptId);
+        }
+        if(this.Area.lev == 2){
+          this.getAreaList('city','add',this.currentDeptId);
+        }
+        if(this.Area.lev == 3){
+          this.getAreaList('county','add',this.currentDeptId);
+        }
+        if(this.Area.lev == 4){
+          this.getAreaList('town','add',this.currentDeptId);
+        }
+        if(this.Area.lev == 5){
+          this.getAreaList('village','add',this.currentDeptId);
+        }
       });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-     /* this.getTreeselect();*/
+      const that = this;
       const userId = row.userId || this.ids;
+      //清空市、县、乡镇、村list
+      that.QueryAreaList.city =[];
+      that.QueryAreaList.county =[];
+      that.QueryAreaList.town=[];
+      that.QueryAreaList.village= [];
+
       getUser(userId).then(response => {
-        this.form = response.data;
-        this.roleOptions = response.roles;
-        this.form.roleIds = response.roleIds;
-        this.open = true;
-        this.title = "修改用户";
-        this.form.password = "";
+        let regionCode = response.data.dept;
+        //请求市县乡村list
+          if(regionCode.regionCode05){
+            that.getAreaList('city','add',regionCode.regionCode01);
+            that.getAreaList('county','add',regionCode.regionCode02);
+            that.getAreaList('town','add',regionCode.regionCode03);
+            that.getAreaList('village','add',regionCode.regionCode04);
+          }else if(regionCode.regionCode04){
+            that.getAreaList('county','add',regionCode.regionCode02);
+            that.getAreaList('town','add',regionCode.regionCode03);
+            that.getAreaList('village','add',regionCode.regionCode04);
+          }else if(regionCode.regionCode03){
+            that.getAreaList('town','add',regionCode.regionCode03);
+            that.getAreaList('village','add',regionCode.regionCode04);
+          }else if(regionCode.regionCode02){
+            that.getAreaList('village','add',regionCode.regionCode04);
+          }else if(regionCode.regionCode01){
+            that.getAreaList('city','add',regionCode.regionCode01);
+          }
+        //form绑定回显值
+        that.form = response.data;
+        that.roleOptions = response.roles;
+        that.form.roleIds = response.roleIds;
+        that.form.city = response.data.dept.regionCode02;
+        that.form.county = response.data.dept.regionCode03;
+        that.form.town = response.data.dept.regionCode04;
+        that.form.village = response.data.dept.regionCode05;
+        that.form.deptId = response.data.deptId;
+        that.form.status = response.data.status;
+        that.open = true;
+        that.title = "修改用户";
+        that.form.password = "";
       });
     },
     /** 重置密码按钮操作 */
@@ -767,22 +974,38 @@ export default {
     },
     /** 提交按钮 */
     submitForm: function() {
+      const that = this;
       this.$refs["form"].validate(valid => {
+        //处理行政区划参数,始终传最后一级
+        if(that.form.village){
+          that.form.deptId = that.form.village
+        }else if(that.form.town){
+          that.form.deptId = that.form.town
+        }else if(that.form.county){
+          that.form.deptId = that.form.county
+        }else if(that.form.city){
+          that.form.deptId = that.form.city
+        }else if(that.form.province){
+          that.form.deptId = that.form.province
+        }
+        console.log(that.form.deptId);
         if (valid) {
-          if (this.form.userId != undefined) {
-            updateUser(this.form).then(response => {
+          if (that.form.userId != undefined) {
+            updateUser(that.form).then(response => {
               if (response.code === 200) {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
+                that.msgSuccess("修改成功");
+                that.open = false;
+                that.Area.code = that.currentDeptId
+                that.getList();
               }
             });
           } else {
-            addUser(this.form).then(response => {
+            addUser(that.form).then(response => {
               if (response.code === 200) {
-                this.msgSuccess("新增成功");
-                this.open = false;
-                this.getList();
+                that.msgSuccess("新增成功");
+                that.open = false;
+                that.Area.code = that.currentDeptId
+                that.getList();
               }
             });
           }

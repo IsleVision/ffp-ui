@@ -150,8 +150,8 @@
         <el-tab-pane label="支出信息" name="outlay">
           <OutpayForm/>
         </el-tab-pane>
-        <el-tab-pane label="监测信息" name="monitor">
-          <OutlayInfoForm/>
+        <el-tab-pane label="监测信息" name="outlay">
+          <MonitorInfo/>
         </el-tab-pane>
       </el-tabs>
      <!-- <div slot="footer" class="dialog-footer">
@@ -170,6 +170,7 @@ import ProductionLifeForm from './ProductionLifeForm';
 // import IncomeInfoForm from './IncomeInfoForm';
 import IncomeForm from './IncomeForm';
 import OutpayForm from './OutpayForm';
+import MonitorInfo from  './MonitorInfo'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -182,12 +183,13 @@ export default {
     ProductionLifeForm,
     // IncomeInfoForm,
     IncomeForm,
-    OutpayForm
+    OutpayForm,
+    MonitorInfo
   },
   data() {
     return {
       //tabs
-      activeName: 'second',
+      activeName: 'first',
       // 遮罩层
       loading: true,
       // 显示搜索条件
@@ -250,11 +252,12 @@ export default {
     },
     /** 查询部门列表 */
     getList() {
-      this.loading = true;
+      this.loading = false;
+      /*this.loading = true;
       listDept(this.queryParams).then(response => {
         this.deptList = this.handleTree(response.data, "deptId");
         this.loading = false;
-      });
+      });*/
     },
     /** 转换部门数据结构 */
     normalizer(node) {
@@ -307,9 +310,9 @@ export default {
       }
       this.open = true;
       this.title = "添加单位";
-      listDept().then(response => {
+ /*     listDept().then(response => {
 	        this.deptOptions = this.handleTree(response.data, "deptId");
-      });
+      });*/
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
