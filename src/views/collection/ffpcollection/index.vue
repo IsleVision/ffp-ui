@@ -145,12 +145,12 @@
           <ProductionLifeForm/>
         </el-tab-pane>
         <el-tab-pane label="收入信息" name="fourth">
-          <IncomeInfoForm/>
+          <IncomeForm/>
         </el-tab-pane>
         <el-tab-pane label="支出信息" name="outlay">
-          <OutlayInfoForm/>
+          <OutpayForm/>
         </el-tab-pane>
-        <el-tab-pane label="监测信息" name="outlay">
+        <el-tab-pane label="监测信息" name="monitor">
           <OutlayInfoForm/>
         </el-tab-pane>
       </el-tabs>
@@ -167,8 +167,9 @@ import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild }
 import BaseInfoForm from './BaseInfoForm';
 import FamilyMembersForm from './FamilyMembersForm';
 import ProductionLifeForm from './ProductionLifeForm';
-import IncomeInfoForm from './IncomeInfoForm';
-import OutlayInfoForm from './OutlayInfoForm';
+// import IncomeInfoForm from './IncomeInfoForm';
+import IncomeForm from './IncomeForm';
+import OutpayForm from './OutpayForm';
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -179,8 +180,9 @@ export default {
     BaseInfoForm,
     FamilyMembersForm,
     ProductionLifeForm,
-    IncomeInfoForm,
-    OutlayInfoForm
+    // IncomeInfoForm,
+    IncomeForm,
+    OutpayForm
   },
   data() {
     return {
