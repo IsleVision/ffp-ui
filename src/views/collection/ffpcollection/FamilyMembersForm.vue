@@ -1,15 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="户主键" prop="poorId">
-        <el-input
-          v-model="queryParams.poorId"
-          placeholder="请输入户主键"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="成员姓名" prop="memberName">
         <el-input
           v-model="queryParams.memberName"
@@ -19,10 +10,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="成员姓名" prop="memberConnect">
+      <el-form-item label="与户主关系" prop="memberConnect">
         <el-input
           v-model="queryParams.memberConnect"
-          placeholder="请输入成员姓名"
+          placeholder="请输入与户主关系"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -46,121 +37,91 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="1.	小学
-            2.	初中
-            3.	高中
-            4.	高职
-            5.	中专
-            6.	大专
-            7.	本科
-            8.	研究生及以上
-            " prop="eDegree">
+      <el-form-item label="文化程度" prop="eDegree">
         <el-input
           v-model="queryParams.eDegree"
-          placeholder="请输入1.	小学
-            2.	初中
-            3.	高中
-            4.	高职
-            5.	中专
-            6.	大专
-            7.	本科
-            8.	研究生及以上
-            "
+          placeholder="请输入文化程度"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="1.普通劳动力；
-            2.无劳动力
-            3.弱劳动力或半劳动力
-            " prop="ldjn">
+      <el-form-item label="劳动技能" prop="ldjn">
         <el-input
           v-model="queryParams.ldjn"
-          placeholder="请输入1.普通劳动力；
-            2.无劳动力
-            3.弱劳动力或半劳动力
-            "
+          placeholder="请输入劳动技能"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherLsjz">
+      <el-form-item label="是否享受临时救助" prop="whetherLsjz">
         <el-input
           v-model="queryParams.whetherLsjz"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否享受临时救助"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="1.党员
-            2.预备党员
-            3.共青团员
-            4.群众
-            " prop="zzmm">
+      <el-form-item label="政治面貌" prop="zzmm">
         <el-input
           v-model="queryParams.zzmm"
-          placeholder="请输入1.党员
-            2.预备党员
-            3.共青团员
-            4.群众
-            "
+          placeholder="请输入政治面貌"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherSxcx">
+      <el-form-item label="是否失学或辍学" prop="whetherSxcx">
         <el-input
           v-model="queryParams.whetherSxcx"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否失学或辍学"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherPth">
+      <el-form-item label="是否会讲普通话" prop="whetherPth">
         <el-input
           v-model="queryParams.whetherPth"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否会讲普通话"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherLybx">
+      <el-form-item label="是否参加城乡居民基本养老保险" prop="whetherLybx">
         <el-input
           v-model="queryParams.whetherLybx"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否参加城乡居民基本养老保险"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherBcbx">
+      <el-form-item label="是否参加商业补充医疗保险" prop="whetherBcbx">
         <el-input
           v-model="queryParams.whetherBcbx"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否参加商业补充医疗保险"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherYwbx">
+      <el-form-item label="是否享受人身意外保险补贴" prop="whetherYwbx">
         <el-input
           v-model="queryParams.whetherYwbx"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否享受人身意外保险补贴"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0是1否" prop="whetherXyjr">
+      <el-form-item label="是否现役军人" prop="whetherXyjr">
         <el-input
           v-model="queryParams.whetherXyjr"
-          placeholder="请输入0是1否"
+          placeholder="请输入是否现役军人"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -175,109 +136,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="省" prop="region01">
-        <el-input
-          v-model="queryParams.region01"
-          placeholder="请输入省"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="市" prop="region02">
-        <el-input
-          v-model="queryParams.region02"
-          placeholder="请输入市"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="县" prop="region03">
-        <el-input
-          v-model="queryParams.region03"
-          placeholder="请输入县"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="乡" prop="region04">
-        <el-input
-          v-model="queryParams.region04"
-          placeholder="请输入乡"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="村" prop="region05">
-        <el-input
-          v-model="queryParams.region05"
-          placeholder="请输入村"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="省编码" prop="regionCode01">
-        <el-input
-          v-model="queryParams.regionCode01"
-          placeholder="请输入省编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="市编码" prop="regionCode02">
-        <el-input
-          v-model="queryParams.regionCode02"
-          placeholder="请输入市编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="县编码" prop="regionCode03">
-        <el-input
-          v-model="queryParams.regionCode03"
-          placeholder="请输入县编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="乡编码" prop="regionCode04">
-        <el-input
-          v-model="queryParams.regionCode04"
-          placeholder="请输入乡编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="村编码" prop="regionCode05">
-        <el-input
-          v-model="queryParams.regionCode05"
-          placeholder="请输入村编码"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="0有效1无效" prop="deleteFlag">
+      <el-form-item label="删除标志" prop="deleteFlag">
         <el-input
           v-model="queryParams.deleteFlag"
-          placeholder="请输入0有效1无效"
+          placeholder="请输入删除标志"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="0减少" prop="isDie">
+      <el-form-item label="成员状态" prop="isDie">
         <el-input
           v-model="queryParams.isDie"
-          placeholder="请输入0减少"
+          placeholder="请输入成员状态"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -340,52 +211,26 @@
 
     <el-table v-loading="loading" :data="memberList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="户主键" align="center" prop="poorId" />
       <el-table-column label="主键" align="center" prop="pMId" />
       <el-table-column label="成员姓名" align="center" prop="memberName" />
-      <el-table-column label="成员姓名" align="center" prop="memberConnect" />
+      <el-table-column label="与户主关系" align="center" prop="memberConnect" />
       <el-table-column label="成员身份证号" align="center" prop="memberCardid" />
       <el-table-column label="民族" align="center" prop="nation" />
-      <el-table-column label="1.	小学
-            2.	初中
-            3.	高中
-            4.	高职
-            5.	中专
-            6.	大专
-            7.	本科
-            8.	研究生及以上
-            " align="center" prop="eDegree" />
-      <el-table-column label="1.普通劳动力；
-            2.无劳动力
-            3.弱劳动力或半劳动力
-            " align="center" prop="ldjn" />
-      <el-table-column label="0是1否" align="center" prop="whetherLsjz" />
-      <el-table-column label="1.党员
-            2.预备党员
-            3.共青团员
-            4.群众
-            " align="center" prop="zzmm" />
-      <el-table-column label="0是1否" align="center" prop="whetherSxcx" />
-      <el-table-column label="0是1否" align="center" prop="whetherPth" />
-      <el-table-column label="0是1否" align="center" prop="whetherLybx" />
-      <el-table-column label="0是1否" align="center" prop="whetherBcbx" />
-      <el-table-column label="0是1否" align="center" prop="whetherYwbx" />
-      <el-table-column label="0是1否" align="center" prop="whetherXyjr" />
+      <el-table-column label="文化程度" align="center" prop="eDegree" />
+      <el-table-column label="劳动技能" align="center" prop="ldjn" />
+      <el-table-column label="是否享受临时救助" align="center" prop="whetherLsjz" />
+      <el-table-column label="政治面貌" align="center" prop="zzmm" />
+      <el-table-column label="是否失学或辍学" align="center" prop="whetherSxcx" />
+      <el-table-column label="是否会讲普通话" align="center" prop="whetherPth" />
+      <el-table-column label="是否参加城乡居民基本养老保险" align="center" prop="whetherLybx" />
+      <el-table-column label="是否参加商业补充医疗保险" align="center" prop="whetherBcbx" />
+      <el-table-column label="是否享受人身意外保险补贴" align="center" prop="whetherYwbx" />
+      <el-table-column label="是否现役军人" align="center" prop="whetherXyjr" />
       <el-table-column label="联系电话" align="center" prop="phoneNumber" />
-      <el-table-column label="省" align="center" prop="region01" />
-      <el-table-column label="市" align="center" prop="region02" />
-      <el-table-column label="县" align="center" prop="region03" />
-      <el-table-column label="乡" align="center" prop="region04" />
-      <el-table-column label="村" align="center" prop="region05" />
-      <el-table-column label="省编码" align="center" prop="regionCode01" />
-      <el-table-column label="市编码" align="center" prop="regionCode02" />
-      <el-table-column label="县编码" align="center" prop="regionCode03" />
-      <el-table-column label="乡编码" align="center" prop="regionCode04" />
-      <el-table-column label="村编码" align="center" prop="regionCode05" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="0有效1无效" align="center" prop="deleteFlag" />
-      <el-table-column label="0减少" align="center" prop="isDie" />
-      <el-table-column label="0减少" align="center" prop="dieReasion" />
+      <el-table-column label="删除标志" align="center" prop="deleteFlag" />
+      <el-table-column label="成员状态" align="center" prop="isDie" />
+      <el-table-column label="减少原因" align="center" prop="dieReasion" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -417,14 +262,11 @@
     <!-- 添加或修改监测户成员对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="户主键" prop="poorId">
-          <el-input v-model="form.poorId" placeholder="请输入户主键" />
-        </el-form-item>
         <el-form-item label="成员姓名" prop="memberName">
           <el-input v-model="form.memberName" placeholder="请输入成员姓名" />
         </el-form-item>
-        <el-form-item label="成员姓名" prop="memberConnect">
-          <el-input v-model="form.memberConnect" placeholder="请输入成员姓名" />
+        <el-form-item label="与户主关系" prop="memberConnect">
+          <el-input v-model="form.memberConnect" placeholder="请输入与户主关系" />
         </el-form-item>
         <el-form-item label="成员身份证号" prop="memberCardid">
           <el-input v-model="form.memberCardid" placeholder="请输入成员身份证号" />
@@ -432,106 +274,46 @@
         <el-form-item label="民族" prop="nation">
           <el-input v-model="form.nation" placeholder="请输入民族" />
         </el-form-item>
-        <el-form-item label="1.	小学
-            2.	初中
-            3.	高中
-            4.	高职
-            5.	中专
-            6.	大专
-            7.	本科
-            8.	研究生及以上
-            " prop="eDegree">
-          <el-input v-model="form.eDegree" placeholder="请输入1.	小学
-            2.	初中
-            3.	高中
-            4.	高职
-            5.	中专
-            6.	大专
-            7.	本科
-            8.	研究生及以上
-            " />
+        <el-form-item label="文化程度" prop="eDegree">
+          <el-input v-model="form.eDegree" placeholder="请输入文化程度" />
         </el-form-item>
-        <el-form-item label="1.普通劳动力；
-            2.无劳动力
-            3.弱劳动力或半劳动力
-            " prop="ldjn">
-          <el-input v-model="form.ldjn" placeholder="请输入1.普通劳动力；
-            2.无劳动力
-            3.弱劳动力或半劳动力
-            " />
+        <el-form-item label="劳动技能" prop="ldjn">
+          <el-input v-model="form.ldjn" placeholder="请输入劳动技能" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherLsjz">
-          <el-input v-model="form.whetherLsjz" placeholder="请输入0是1否" />
+        <el-form-item label="是否享受临时救助" prop="whetherLsjz">
+          <el-input v-model="form.whetherLsjz" placeholder="请输入是否享受临时救助" />
         </el-form-item>
-        <el-form-item label="1.党员
-            2.预备党员
-            3.共青团员
-            4.群众
-            " prop="zzmm">
-          <el-input v-model="form.zzmm" placeholder="请输入1.党员
-            2.预备党员
-            3.共青团员
-            4.群众
-            " />
+        <el-form-item label="政治面貌" prop="zzmm">
+          <el-input v-model="form.zzmm" placeholder="请输入政治面貌" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherSxcx">
-          <el-input v-model="form.whetherSxcx" placeholder="请输入0是1否" />
+        <el-form-item label="是否失学或辍学" prop="whetherSxcx">
+          <el-input v-model="form.whetherSxcx" placeholder="请输入是否失学或辍学" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherPth">
-          <el-input v-model="form.whetherPth" placeholder="请输入0是1否" />
+        <el-form-item label="是否会讲普通话" prop="whetherPth">
+          <el-input v-model="form.whetherPth" placeholder="请输入是否会讲普通话" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherLybx">
-          <el-input v-model="form.whetherLybx" placeholder="请输入0是1否" />
+        <el-form-item label="是否参加城乡居民基本养老保险" prop="whetherLybx">
+          <el-input v-model="form.whetherLybx" placeholder="请输入是否参加城乡居民基本养老保险" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherBcbx">
-          <el-input v-model="form.whetherBcbx" placeholder="请输入0是1否" />
+        <el-form-item label="是否参加商业补充医疗保险" prop="whetherBcbx">
+          <el-input v-model="form.whetherBcbx" placeholder="请输入是否参加商业补充医疗保险" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherYwbx">
-          <el-input v-model="form.whetherYwbx" placeholder="请输入0是1否" />
+        <el-form-item label="是否享受人身意外保险补贴" prop="whetherYwbx">
+          <el-input v-model="form.whetherYwbx" placeholder="请输入是否享受人身意外保险补贴" />
         </el-form-item>
-        <el-form-item label="0是1否" prop="whetherXyjr">
-          <el-input v-model="form.whetherXyjr" placeholder="请输入0是1否" />
+        <el-form-item label="是否现役军人" prop="whetherXyjr">
+          <el-input v-model="form.whetherXyjr" placeholder="请输入是否现役军人" />
         </el-form-item>
         <el-form-item label="联系电话" prop="phoneNumber">
           <el-input v-model="form.phoneNumber" placeholder="请输入联系电话" />
         </el-form-item>
-        <el-form-item label="省" prop="region01">
-          <el-input v-model="form.region01" placeholder="请输入省" />
+        <el-form-item label="删除标志" prop="deleteFlag">
+          <el-input v-model="form.deleteFlag" placeholder="请输入删除标志" />
         </el-form-item>
-        <el-form-item label="市" prop="region02">
-          <el-input v-model="form.region02" placeholder="请输入市" />
+        <el-form-item label="成员状态" prop="isDie">
+          <el-input v-model="form.isDie" placeholder="请输入成员状态" />
         </el-form-item>
-        <el-form-item label="县" prop="region03">
-          <el-input v-model="form.region03" placeholder="请输入县" />
-        </el-form-item>
-        <el-form-item label="乡" prop="region04">
-          <el-input v-model="form.region04" placeholder="请输入乡" />
-        </el-form-item>
-        <el-form-item label="村" prop="region05">
-          <el-input v-model="form.region05" placeholder="请输入村" />
-        </el-form-item>
-        <el-form-item label="省编码" prop="regionCode01">
-          <el-input v-model="form.regionCode01" placeholder="请输入省编码" />
-        </el-form-item>
-        <el-form-item label="市编码" prop="regionCode02">
-          <el-input v-model="form.regionCode02" placeholder="请输入市编码" />
-        </el-form-item>
-        <el-form-item label="县编码" prop="regionCode03">
-          <el-input v-model="form.regionCode03" placeholder="请输入县编码" />
-        </el-form-item>
-        <el-form-item label="乡编码" prop="regionCode04">
-          <el-input v-model="form.regionCode04" placeholder="请输入乡编码" />
-        </el-form-item>
-        <el-form-item label="村编码" prop="regionCode05">
-          <el-input v-model="form.regionCode05" placeholder="请输入村编码" />
-        </el-form-item>
-        <el-form-item label="0有效1无效" prop="deleteFlag">
-          <el-input v-model="form.deleteFlag" placeholder="请输入0有效1无效" />
-        </el-form-item>
-        <el-form-item label="0减少" prop="isDie">
-          <el-input v-model="form.isDie" placeholder="请输入0减少" />
-        </el-form-item>
-        <el-form-item label="0减少" prop="dieReasion">
+        <el-form-item label="减少原因" prop="dieReasion">
           <el-input v-model="form.dieReasion" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
@@ -572,7 +354,6 @@
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          poorId: null,
           memberName: null,
           memberConnect: null,
           memberCardid: null,
@@ -588,16 +369,6 @@
           whetherYwbx: null,
           whetherXyjr: null,
           phoneNumber: null,
-          region01: null,
-          region02: null,
-          region03: null,
-          region04: null,
-          region05: null,
-          regionCode01: null,
-          regionCode02: null,
-          regionCode03: null,
-          regionCode04: null,
-          regionCode05: null,
           deleteFlag: null,
           isDie: null,
           dieReasion: null

@@ -94,7 +94,7 @@
         <el-tab-pane label="基础信息" name="first">
           <BaseInfoForm/>
         </el-tab-pane>
-        <!--<el-tab-pane label="家庭成员信息" name="second">
+        <el-tab-pane label="家庭成员信息" name="second">
           <FamilyMembersForm/>
         </el-tab-pane>
         <el-tab-pane label="生产生活条件" name="third">
@@ -108,7 +108,7 @@
         </el-tab-pane>
         <el-tab-pane label="监测信息" name="monitor">
           <MonitorInfo/>
-        </el-tab-pane>-->
+        </el-tab-pane>
       </el-tabs>
      <!-- <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -196,7 +196,7 @@ export default {
     };
   },
   created() {
-   /* this.getList();*/
+    this.getList();
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
@@ -211,8 +211,8 @@ export default {
       this.loading = false;
       this.loading = true;
       jchlist(this.queryParams).then(response => {
-        this.jchList = response.data.records;
-        this.total = response.data.total;
+        this.jchList = response.rows;
+        this.total = response.total;
         this.loading = false;
       });
     },
