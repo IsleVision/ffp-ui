@@ -37,14 +37,14 @@
           v-hasPermi="['collect:poor:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+     <!-- <el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
           v-hasPermi="['collect:poor:export']"
-        >导出</el-button>
+        >导出</el-button>-->
       </el-col>
       <div class="top-right-btn">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -59,28 +59,16 @@
     <el-table v-loading="loading" :data="poorList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="户主姓名" align="center" prop="poorName" />
-      <el-table-column label="户主身份证" align="center" prop="poorCardid" />
+      <el-table-column label="户主身份证" align="center" prop="poorCardid" width="200"/>
       <el-table-column label="省" align="center" prop="region01" :formatter="region01Format" />
       <el-table-column label="市" align="center" prop="region02" :formatter="region02Format" />
       <el-table-column label="县" align="center" prop="region03" :formatter="region03Format" />
       <el-table-column label="乡" align="center" prop="region04" :formatter="region04Format" />
       <el-table-column label="村" align="center" prop="region05" :formatter="region05Format" />
-      <el-table-column label="联系方式" align="center" prop="poorPhone" />
-      <el-table-column label="家庭住址" align="center" prop="poorAddress" />
+      <el-table-column label="联系方式" align="center" prop="poorPhone" width="150"/>
+      <el-table-column label="家庭住址" align="center" prop="poorAddress" width="300"/>
       <el-table-column label="是否军烈属" align="center" prop="poorJls" :formatter="poorJlsFormat" />
       <el-table-column label="户类型" align="center" prop="ffpHuType" :formatter="ffpHuTypeFormat" />
-      <el-table-column label="耕地面积" align="center" prop="poorGdArea" />
-      <el-table-column label="林果面积" align="center" prop="poorLgArea" />
-      <el-table-column label="退耕还林面积" align="center" prop="poorTghlArea" />
-      <el-table-column label="林地面积" align="center" prop="poorLdArea" />
-      <el-table-column label="水面面积" align="center" prop="poorSmArea" />
-      <el-table-column label="住房面积" align="center" prop="houseArea" />
-      <el-table-column label="是否加入农民专业合作社" align="center" prop="whetherNchzs" />
-      <el-table-column label="是否有龙头企业带动" align="center" prop="whetherLtqydd" />
-      <el-table-column label="是否同生活用电" align="center" prop="whetherShyd" />
-      <el-table-column label="是否有卫生厕所" align="center" prop="whetherWsj" />
-      <el-table-column label="主要燃料类型" align="center" prop="fuelType" />
-      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

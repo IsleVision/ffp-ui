@@ -37,7 +37,7 @@
           v-hasPermi="['collect:member:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!--<el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-download"
@@ -45,7 +45,7 @@
           @click="handleExport"
           v-hasPermi="['collect:member:export']"
         >导出</el-button>
-      </el-col>
+      </el-col>-->
       <div class="top-right-btn">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
           <el-button size="mini" circle icon="el-icon-refresh" @click="handleQuery" />
@@ -61,7 +61,7 @@
       <!--<el-table-column label="主键" align="center" prop="pMId" />-->
       <el-table-column label="成员姓名" align="center" prop="memberName" />
       <el-table-column label="与户主关系" align="center" prop="memberConnect" :formatter="memberConnectFormat" />
-      <el-table-column label="成员身份证号" align="center" prop="memberCardid" />
+      <el-table-column label="成员身份证号" align="center" prop="memberCardid" width="200"/>
       <el-table-column label="民族" align="center" prop="nation" :formatter="nationFormat" />
       <el-table-column label="文化程度" align="center" prop="eDegree" :formatter="eDegreeFormat" />
       <el-table-column label="劳动技能" align="center" prop="ldjn" :formatter="ldjnFormat" />
@@ -73,7 +73,7 @@
       <el-table-column label="是否参加商业补充医疗保险" align="center" prop="whetherBcbx" :formatter="whetherBcbxFormat" />
       <el-table-column label="是否享受人身意外保险补贴" align="center" prop="whetherYwbx" :formatter="whetherYwbxFormat" />
       <el-table-column label="是否现役军人" align="center" prop="whetherXyjr" :formatter="whetherXyjrFormat" />
-      <el-table-column label="联系电话" align="center" prop="phoneNumber" />
+      <el-table-column label="联系电话" align="center" prop="phoneNumber"  width="150"/>
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="成员状态" align="center" prop="isDie" :formatter="isDieFormat" />
       <el-table-column label="减少原因" align="center" prop="dieReasion" />

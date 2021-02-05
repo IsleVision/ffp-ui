@@ -251,7 +251,7 @@ export default {
         this.form.parentId = row.deptId;
       }
       this.open = true;
-      this.title = "添加单位";
+      this.title = "添加监测户";
  /*     listDept().then(response => {
 	        this.deptOptions = this.handleTree(response.data, "deptId");
       });*/

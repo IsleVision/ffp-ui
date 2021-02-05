@@ -245,7 +245,7 @@
         listDept(this.queryParams).then(response => {
           console.log(JSON.stringify(response.data));
          /* this.deptList = this.handleTree(response.data, "deptId");*/
-          this.deptList = response.data;
+          this.deptList = response.rows;
           this.total = response.total;
           this.loading = false;
         });

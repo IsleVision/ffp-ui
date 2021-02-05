@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询监测户成员列表
 export function listMember(query) {
   return request({
-    url: '/collect/member/list',
+    url: '/poor/member/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listMember(query) {
 // 查询监测户成员详细
 export function getMember(pMId) {
   return request({
-    url: '/collect/member/' + pMId,
+    url: '/poor/member/' + pMId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getMember(pMId) {
 // 新增监测户成员
 export function addMember(data) {
   return request({
-    url: '/collect/member',
+    url: '/poor/member',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addMember(data) {
 // 修改监测户成员
 export function updateMember(data) {
   return request({
-    url: '/collect/member',
+    url: '/poor/member',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateMember(data) {
 // 删除监测户成员
 export function delMember(pMId) {
   return request({
-    url: '/collect/member/' + pMId,
+    url: '/poor/member/' + pMId,
     method: 'delete'
   })
 }

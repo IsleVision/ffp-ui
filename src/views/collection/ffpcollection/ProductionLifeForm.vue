@@ -37,7 +37,7 @@
           v-hasPermi="['collect:poor:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+     <!-- <el-col :span="1.5">
         <el-button
           type="warning"
           icon="el-icon-download"
@@ -45,7 +45,7 @@
           @click="handleExport"
           v-hasPermi="['collect:poor:export']"
         >导出</el-button>
-      </el-col>
+      </el-col>-->
       <div class="top-right-btn">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
           <el-button size="mini" circle icon="el-icon-refresh" @click="handleQuery" />
