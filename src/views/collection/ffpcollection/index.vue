@@ -48,69 +48,19 @@
 
     <el-table
       v-loading="loading"
-      :data="deptList"
-      row-key="deptId"
+      :data="jchList"
+      row-key="poorId"
       default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="deptName" label="序号" ></el-table-column>
-      <el-table-column prop="orderNum" label="市"></el-table-column>
-      <el-table-column prop="status" label="县"></el-table-column>
-      <el-table-column label="乡镇" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="村" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="户主" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="成员人数" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="监测类型" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="家庭人均年收入" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="安全住房" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="安全饮用水" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="有无义务阶段辍学" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="参加城乡居民医保" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="监测时间" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column type="index" label="序号" width="80"></el-table-column>
+      <el-table-column prop="region02" label="市"></el-table-column>
+      <el-table-column prop="region03" label="县"></el-table-column>
+      <el-table-column prop="region04" label="乡镇"></el-table-column>
+      <el-table-column prop="region05" label="村"></el-table-column>
+      <el-table-column prop="poorName" label="户主"></el-table-column>
+      <el-table-column prop="poorNum" label="成员人数"></el-table-column>
+      <el-table-column prop="ffpHuType" label="监测类型"></el-table-column>
+      <el-table-column prop="createTime" label="监测时间" ></el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -131,14 +81,20 @@
         </template>
       </el-table-column>
     </el-table>
-
+<!--    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />-->
     <!-- 添加或修改部门对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
           <BaseInfoForm/>
         </el-tab-pane>
-        <el-tab-pane label="家庭成员信息" name="second">
+        <!--<el-tab-pane label="家庭成员信息" name="second">
           <FamilyMembersForm/>
         </el-tab-pane>
         <el-tab-pane label="生产生活条件" name="third">
@@ -152,7 +108,7 @@
         </el-tab-pane>
         <el-tab-pane label="监测信息" name="monitor">
           <MonitorInfo/>
-        </el-tab-pane>
+        </el-tab-pane>-->
       </el-tabs>
      <!-- <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -163,7 +119,7 @@
 </template>
 
 <script>
-import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild } from "@/api/system/dept";
+import {jchlist} from "@/api/collect/list";
 import BaseInfoForm from './BaseInfoForm';
 import FamilyMembersForm from './FamilyMembersForm';
 import ProductionLifeForm from './ProductionLifeForm';
@@ -188,6 +144,8 @@ export default {
   },
   data() {
     return {
+      //总条数
+      total:'',
       //tabs
       activeName: 'first',
       // 遮罩层
@@ -195,9 +153,7 @@ export default {
       // 显示搜索条件
       showSearch: true,
       // 表格树数据
-      deptList: [],
-      // 部门树选项
-      deptOptions: [],
+      jchList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -206,8 +162,8 @@ export default {
       statusOptions: [],
       // 查询参数
       queryParams: {
-        deptName: undefined,
-        status: undefined
+        pageNum:1,
+        pageSize:10
       },
       // 表单参数
       form: {},
@@ -240,7 +196,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+   /* this.getList();*/
     this.getDicts("sys_normal_disable").then(response => {
       this.statusOptions = response.data;
     });
@@ -253,26 +209,12 @@ export default {
     /** 查询部门列表 */
     getList() {
       this.loading = false;
-      /*this.loading = true;
-      listDept(this.queryParams).then(response => {
-        this.deptList = this.handleTree(response.data, "deptId");
+      this.loading = true;
+      jchlist(this.queryParams).then(response => {
+        this.jchList = response.data.records;
+        this.total = response.data.total;
         this.loading = false;
-      });*/
-    },
-    /** 转换部门数据结构 */
-    normalizer(node) {
-      if (node.children && !node.children.length) {
-        delete node.children;
-      }
-      return {
-        id: node.deptId,
-        label: node.deptName,
-        children: node.children
-      };
-    },
-    // 字典状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
+      });
     },
     // 取消按钮
     cancel() {
@@ -316,6 +258,7 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      this.open = true;
       this.reset();
       getDept(row.deptId).then(response => {
         this.form = response.data;
