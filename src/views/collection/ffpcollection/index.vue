@@ -101,7 +101,7 @@
           <ProductionLifeForm/>
         </el-tab-pane>
         <el-tab-pane label="收入信息" name="fourth">
-          <IncomeForm/>
+          <IncomeForm :poor-id="poorId"/>
         </el-tab-pane>
         <el-tab-pane label="支出信息" name="outlay">
           <OutlayForm/>
@@ -144,6 +144,7 @@ export default {
   },
   data() {
     return {
+      poorId:'',
       //总条数
       total:'',
       //tabs
@@ -258,16 +259,17 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
+      this.poorId = row.poorId;
       this.open = true;
-      this.reset();
-      getDept(row.deptId).then(response => {
+      // this.reset();
+/*      getDept(row.deptId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改部门";
       });
       listDeptExcludeChild(row.deptId).then(response => {
 	        this.deptOptions = this.handleTree(response.data, "deptId");
-      });
+      });*/
     },
     /** 提交按钮 */
     submitForm: function() {

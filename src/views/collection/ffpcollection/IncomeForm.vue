@@ -67,6 +67,7 @@
       <el-table-column label="计划生育金" align="center" prop="incomeJhsy" />
       <el-table-column label="低保金" align="center" prop="incomeDb" />
       <el-table-column label="特困供养金" align="center" prop="incomeTkgy" />
+      <el-table-column label="养老保险金" align="center" prop="incomeYlbx" />
       <el-table-column label="生态补偿金" align="center" prop="incomeStbc" />
       <el-table-column label="其他转移性收入" align="center" prop="incomeQtzy" />
       <el-table-column label="财产性收入" align="center" prop="incomeCy" />
@@ -136,6 +137,9 @@
         <el-form-item label="特困供养金" labelWidth="180px" prop="incomeTkgy">
           <el-input v-model="form.incomeTkgy" placeholder="请输入特困供养金" />
         </el-form-item>
+        <el-form-item label="养老保险金" labelWidth="180px" prop="incomeYlbx">
+          <el-input v-model="form.incomeYlbx" placeholder="请输入养老保险金" />
+        </el-form-item>
         <el-form-item label="生态补偿金" labelWidth="180px" prop="incomeStbc">
           <el-input v-model="form.incomeStbc" placeholder="请输入生态补偿金" />
         </el-form-item>
@@ -169,6 +173,9 @@ import { listIncome, getIncome, delIncome, addIncome, updateIncome } from "@/api
 
 export default {
   name: "Income",
+  props:{
+    poorId:String
+  },
   data() {
     return {
       // 遮罩层
@@ -193,13 +200,14 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        poorId: null,
+        poorId: this.props.poorId,
         incomeWg: null,
         incomeScjy: null,
         incomeZy: null,
         incomeJhsy: null,
         incomeDb: null,
         incomeTkgy: null,
+        incomeYlbx: null,
         incomeStbc: null,
         incomeQtzy: null,
         incomeCy: null,
@@ -210,6 +218,7 @@ export default {
       },
       // 表单参数
       form: {
+        poorId: this.props.poorId
       },
       // 表单校验
       rules: {
@@ -241,7 +250,7 @@ export default {
     // 表单重置
     reset() {
       this.form = {
-        poorId: null,
+        poorId: this.props.poorId,
         pIId: null,
         incomeWg: null,
         incomeScjy: null,
@@ -249,6 +258,7 @@ export default {
         incomeJhsy: null,
         incomeDb: null,
         incomeTkgy: null,
+        incomeYlbx: null,
         incomeStbc: null,
         incomeQtzy: null,
         incomeCy: null,
@@ -349,11 +359,12 @@ export default {
   watch:{
     form:{
       handler(){
-        this.form.incomeZy=Number(this.form.incomeJhsy)+Number(this.form.incomeDb)+Number(this.form.incomeTkgy)+Number(this.form.incomeStbc)+Number(this.form.incomeQtzy);
+        this.form.incomeZy=Number(this.form.incomeJhsy)+Number(this.form.incomeDb)+Number(this.form.incomeTkgy)+Number(this.form.incomeYlbx)+Number(this.form.incomeStbc)+Number(this.form.incomeQtzy);
         this.form.incomeCy=Number(this.form.incomeZcbf)+Number(this.form.incomeQt);
       },
       deep:true
     }
+
   }
 
 
